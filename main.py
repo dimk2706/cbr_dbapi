@@ -53,12 +53,11 @@ app = FastAPI(
 )
 
 # Настройка Logfire только если токен указан
-try:
-    logfire_token = env("LOGFIRE_TOKEN")
-    if logfire_token:
-        logfire.configure(token=logfire_token, service_name="Currency-API")
-        logfire.instrument_fastapi(app, capture_headers=True)
-except:
+logfire_token = env("LOGFIRE_TOKEN", None)
+if logfire_token:
+    logfire.configure(token=logfire_token, service_name="Currency-API")
+    logfire.instrument_fastapi(app, capture_headers=True)
+else:
     print("Logfire not configured, continuing without logging")
 
 
@@ -165,7 +164,7 @@ async def delete_currency_rates(
 @app.get("/currency-rates/latest")
 async def get_latest_rates(
     currency_codes: Annotated[list[str] | None, Query()] = None,
-    session: DBSession = Depends(get_async_session)
+    session: AsyncSession = Depends(get_async_session)  # Исправлено здесь
 ):
     """
     Get latest currency rates for specified currencies.
