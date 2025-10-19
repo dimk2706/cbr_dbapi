@@ -1,6 +1,6 @@
 from collections.abc import AsyncGenerator
 
-from environs import env
+from environs import Env
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -9,9 +9,13 @@ from sqlalchemy.ext.asyncio import (
 
 from models import Base
 
+# Загружаем env
+env = Env()
+env.read_env()
 
-env.read_env(recurse=True)
-engine = create_async_engine(env("POSTGRES_URL"))
+# Используем SQLite по умолчанию, если POSTGRES_URL не указан
+database_url = env("POSTGRES_URL", "sqlite+aiosqlite:///./currency.db")
+engine = create_async_engine(database_url)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
