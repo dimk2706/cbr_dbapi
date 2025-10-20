@@ -7,7 +7,7 @@ After=network.target
 Type=simple
 User=dakorlykhanov-2121817
 WorkingDirectory=/home/dakorlykhanov-2121817/cbr_dbapi
-ExecStart=/home/dakorlykhanov-2121817/cbr_dbapi/.myenv/bin/python /home/dakorlykhanov-2121817/cbr_dbapi/logfire_auto_tracing.py
+ExecStart=/home/dakorlykhanov-2121817/cbr_dbapi/myenv/bin/python /home/dakorlykhanov-2121817/cbr_dbapi/logfire_auto_tracing.py
 Restart=always
 
 [Install]
